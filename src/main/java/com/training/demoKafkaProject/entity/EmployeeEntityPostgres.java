@@ -1,13 +1,11 @@
 package com.training.demoKafkaProject.entity;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Entity;
 
 @Entity
-@Document
-public class EmployeeEntity {
+public class EmployeeEntityPostgres {
 
         @Id
         private String employeeId;

@@ -2,11 +2,8 @@ package com.training.demoKafkaProject.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.training.demoKafkaProject.dto.EmployeeDTO;
-import org.apache.kafka.common.internals.Topic;
-import com.training.demoKafkaProject.entity.EmployeeEntity;
+import com.training.demoKafkaProject.entity.EmployeeEntityPostgres;
 import com.training.demoKafkaProject.service.EmployeeService;
-import jdk.nashorn.internal.objects.annotations.Constructor;
-import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,20 +19,20 @@ public class EmployeeController {
 
     @PostMapping("/send/{topic}/")
     public ResponseEntity<String> send(@PathVariable("topic") String topic, @RequestBody EmployeeDTO employeeDTO) throws JsonProcessingException {
-        EmployeeEntity employee = new EmployeeEntity();
+        EmployeeEntityPostgres employee = new EmployeeEntityPostgres();
         BeanUtils.copyProperties(employeeDTO , employee);
         employeeService.sendMessage(topic,employee);
         return new ResponseEntity<String>(employee.getFirstName() +" for topic "+topic+" received",HttpStatus.ACCEPTED);
     }
 
     @GetMapping(value="/employee/{id}")
-    public Employee getById(@PathVariable("id") String id)
+    public EmployeeEntityPostgres getById(@PathVariable("id") String id)
     {
         return employeeService.getById(id);
     }
 
     @GetMapping(value="/employee")
-    public Iterable<Employee> getAll()
+    public Iterable<EmployeeEntityPostgres> getAll()
     {
         return employeeService.getAll();
     }
