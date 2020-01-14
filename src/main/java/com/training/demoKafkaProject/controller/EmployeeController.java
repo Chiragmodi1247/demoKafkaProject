@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.training.demoKafkaProject.dto.EmployeeDTO;
 import com.training.demoKafkaProject.entity.EmployeeEntity;
 import com.training.demoKafkaProject.service.EmployeeService;
+import jdk.nashorn.internal.objects.annotations.Constructor;
+import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +15,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {
+
+    @Constructor
+    public void createNewTopic(){
+        String name = "employee";
+        Integer numPartitions = 3;
+        Short replicationFactor = 1;
+        NewTopic newTopic = new NewTopic(name,numPartitions,replicationFactor);
+    }
+
 
     @Autowired
     EmployeeService employeeService;
@@ -24,12 +35,5 @@ public class EmployeeController {
         employeeService.sendMessage(topic,employee);
         return new ResponseEntity<String>(employee.getFirstName() +" for topic "+topic+" received",HttpStatus.ACCEPTED);
     }
-//    public ResponseEntity<String> addOrUpdateEmployee(@RequestBody EmployeeDTO employeeDTO){
-////        St employee = new Employee();
-////        BeanUtils.copyProperties(employeeDTO , employee);
-////        Employee employeeCreated = employeeService.insert(employee);
-//
-//        return new ResponseEntity<String>(employeeCreated.getEmployeeId(),HttpStatus.CREATED);
-//    }
 
 }
