@@ -2,60 +2,66 @@ package com.training.demoKafkaProject.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.training.demoKafkaProject.entity.EmployeeEntity;
-import com.training.demoKafkaProject.repository.EmployeeRepository;
+import com.training.demoKafkaProject.entity.EmployeeEntityMongo;
+import com.training.demoKafkaProject.entity.EmployeeEntityPostgres;
+import com.training.demoKafkaProject.repository.EmployeeRepositoryMongo;
+import com.training.demoKafkaProject.repository.EmployeeRepositoryPostgres;
 import com.training.demoKafkaProject.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+
 import java.util.Optional;
-import javax.annotation.PreDestroy;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
+
 
     @Autowired
     private KafkaTemplate<String,String> kafkaTemplate;
 
     @Autowired
-    EmployeeRepository employeeRepository;
+    EmployeeRepositoryMongo employeeRepositoryMongo;
+
+    @Autowired
+    EmployeeRepositoryPostgres employeeRepositoryPostgres;
 
     @Override
-      public void sendMessage(String TOPIC,EmployeeEntity employeeEntity) throws JsonProcessingException {
+    public void sendMessage(String TOPIC,EmployeeEntityPostgres employeeEntityPostgres) throws JsonProcessingException {
 
         ObjectMapper ow = new ObjectMapper();
-        String json = ow.writeValueAsString(employeeEntity);
+        String json = ow.writeValueAsString(employeeEntityPostgres);
         System.out.println("Send object: "+json);
         this.kafkaTemplate.send(TOPIC,json);
     }
 
-    @KafkaListener(topics = "test", groupId = "group_id")
-    public Employee consumePost(String message) throws JsonProcessingException {
-        ObjectMapper ow = new ObjectMapper();
-        Employee employeeEntity = ow.readValue(message,Employee.class);
-        return employeeRepository.save(employeeEntity);
-    }
-
     @Override
-    public Employee getById(String id) {
-        Optional<Employee> employee=employeeRepository.findById(id);
+    public EmployeeEntityPostgres getById(String id) {
+        Optional<EmployeeEntityPostgres> employee = employeeRepositoryPostgres.findById(id);
         return employee.get();
     }
 
     @Override
-    public Iterable<Employee> getAll() {
-        Iterable<Employee> employee=employeeRepository.findAll();
-        return employee;
+    public Iterable<EmployeeEntityPostgres> getAll() {
+        Iterable<EmployeeEntityPostgres> employeeEntities =employeeRepositoryPostgres.findAll();
+        return employeeEntities;
     }
 
+    @KafkaListener(topics = "employee", groupId = "group_id")
+        public void consumeForMongo(String message) throws JsonProcessingException {
+        ObjectMapper ow = new ObjectMapper();
+        EmployeeEntityMongo employeeEntityMongo = ow.readValue(message,EmployeeEntityMongo.class);
+        employeeRepositoryMongo.insert(employeeEntityMongo);
+        System.out.println(employeeEntityMongo.getFirstName()+" from mongo");
+        }
 
     @KafkaListener(topics = "employee", groupId = "group_id")
-    public void consumeformongo(String message) throws JsonProcessingException {
+    public void consumeForPostgres(String message) throws JsonProcessingException {
         ObjectMapper ow = new ObjectMapper();
-        EmployeeEntity employeeEntity = ow.readValue(message,EmployeeEntity.class);
-        employeeRepository.insert(employeeEntity);
-        System.out.println(employeeEntity.getFirstName());
+        EmployeeEntityPostgres employeeEntityPostgres = ow.readValue(message,EmployeeEntityPostgres.class);
+        employeeRepositoryPostgres.save(employeeEntityPostgres);
+        System.out.println(employeeEntityPostgres.getFirstName()+" from postgres");
     }
 
 }
