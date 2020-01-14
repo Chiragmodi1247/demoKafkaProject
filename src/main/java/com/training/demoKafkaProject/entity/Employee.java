@@ -1,6 +1,13 @@
-package com.training.demoKafkaProject.dto;
+package com.training.demoKafkaProject.entity;
 
-public class EmployeeDTO {
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import java.util.Date;
+
+@Entity
+public class Employee {
+
+    @Id
     private String employeeId;
     private String firstName;
     private String lastName;
