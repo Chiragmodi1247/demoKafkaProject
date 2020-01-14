@@ -34,14 +34,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @KafkaListener(topics = "employee", groupId = "group_id")
-        public void consume(String message) throws JsonProcessingException {
+    public void consume(String message) throws JsonProcessingException {
         ObjectMapper ow = new ObjectMapper();
         EmployeeEntity employeeEntity = ow.readValue(message,EmployeeEntity.class);
-//        EmployeeEntity employeeEntity = new ObjectMapper().readValue(message,EmployeeEntity.class);
-//                System.out.println(employeeEntity);
         employeeRepository.insert(employeeEntity);
-
         System.out.println(employeeEntity.getFirstName());
-        }
+    }
 
 }
