@@ -1,11 +1,20 @@
-package com.training.demoKafkaProject.dto;
+package com.training.demoKafkaProject.entity;
 
-public class EmployeeDTO {
-    private String employeeId;
-    private String firstName;
-    private String lastName;
-    private String dateOfBirth;
-    private String experience;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.persistence.Entity;
+
+@Entity
+@Document
+public class EmployeeEntity {
+
+        @Id
+        private String employeeId;
+        private String firstName;
+        private String lastName;
+        private String dateOfBirth;
+        private String experience;
 
     public String getEmployeeId() {
         return employeeId;

@@ -2,6 +2,7 @@ package com.training.demoKafkaProject.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.training.demoKafkaProject.dto.EmployeeDTO;
+import org.apache.kafka.common.internals.Topic;
 import com.training.demoKafkaProject.entity.EmployeeEntity;
 import com.training.demoKafkaProject.service.EmployeeService;
 import jdk.nashorn.internal.objects.annotations.Constructor;
@@ -16,15 +17,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/employee")
 public class EmployeeController {
 
-    @Constructor
-    public void createNewTopic(){
-        String name = "employee";
-        Integer numPartitions = 3;
-        Short replicationFactor = 1;
-        NewTopic newTopic = new NewTopic(name,numPartitions,replicationFactor);
-    }
-
-
     @Autowired
     EmployeeService employeeService;
 
@@ -36,4 +28,15 @@ public class EmployeeController {
         return new ResponseEntity<String>(employee.getFirstName() +" for topic "+topic+" received",HttpStatus.ACCEPTED);
     }
 
+    @GetMapping(value="/employee/{id}")
+    public Employee getById(@PathVariable("id") String id)
+    {
+        return employeeService.getById(id);
+    }
+
+    @GetMapping(value="/employee")
+    public Iterable<Employee> getAll()
+    {
+        return employeeService.getAll();
+    }
 }
