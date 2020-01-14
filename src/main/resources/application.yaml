@@ -14,10 +14,6 @@ spring:
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
   data:
     mongodb:
-      authentication-database: admin
-      username: training
-      password: training
-      database: trainingdb
       port: 27017
       host: localhost
   jpa:

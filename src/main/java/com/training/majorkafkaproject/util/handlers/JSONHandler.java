@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.String;
-
 import com.training.majorkafkaproject.entity.Employee;
 import com.training.majorkafkaproject.repository.MyCollection;
 import com.training.majorkafkaproject.service.Producer;
@@ -14,12 +13,10 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.springframework.beans.factory.annotation.Autowired;
 
 
 public class JSONHandler implements MyFileHandler {
     private final Producer producer;
-   // @Autowired
    public JSONHandler(Producer producer) {
         this.producer = producer;
     }
@@ -35,13 +32,9 @@ public class JSONHandler implements MyFileHandler {
             for(Object jsonObject: employeeList){
                 JSONObject employee =(JSONObject) jsonObject;
                 String FirstName = (String) employee.get("firstName");
-                //System.out.print(FirstName+", ");
                 String LastName = (String) employee.get("lastName");
-                //System.out.print(LastName+", ");
                 String DateOfBirth = (String) employee.get("dateOfBirth");
-                //System.out.print(DateOfBirth+", ");
                 Long Experience = (Long) employee.get("experience");
-                //System.out.println(Experience);
                 Employee e = new Employee();
                 Date date=new SimpleDateFormat("dd/MM/yy").parse(DateOfBirth);
                 e.setDateOfBirth(date);
@@ -49,7 +42,7 @@ public class JSONHandler implements MyFileHandler {
                 e.setFirstName(FirstName);
                 e.setLastName(LastName);
 //                System.out.println(e.toString());
-                //MyCollection.add(e);
+//                MyCollection.add(e);
                 this.producer.sendMessage(e);
             }
         } catch (FileNotFoundException e) {
@@ -59,7 +52,6 @@ public class JSONHandler implements MyFileHandler {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
     }
 //
 //    public void write() {

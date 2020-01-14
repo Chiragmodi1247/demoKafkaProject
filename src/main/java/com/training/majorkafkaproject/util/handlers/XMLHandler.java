@@ -2,11 +2,9 @@ package com.training.majorkafkaproject.util.handlers;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
-
 import com.training.majorkafkaproject.entity.Employee;
 import com.training.majorkafkaproject.repository.MyCollection;
 import com.training.majorkafkaproject.service.Producer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
@@ -19,7 +17,6 @@ import java.util.Date;
 public class XMLHandler implements MyFileHandler {
     private final Producer producer;
 
-//    @Autowired
 public XMLHandler(Producer producer) {
         this.producer = producer;
     }
@@ -51,7 +48,6 @@ public XMLHandler(Producer producer) {
                     //MyCollection.add(emp);
                     this.producer.sendMessage(emp);
                 }
-
             }
         }
         catch(Exception e){

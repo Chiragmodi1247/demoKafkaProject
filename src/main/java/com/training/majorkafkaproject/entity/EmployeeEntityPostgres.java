@@ -1,13 +1,15 @@
-package com.training.majorkafkaproject.dto;
+package com.training.majorkafkaproject.entity;
 
-import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
-public class EmployeeDTO {
-
+@Entity
+public class EmployeeEntityPostgres {
+    @Id
     private String firstName;
     private String lastName;
-    private Date dateOfBirth;
-    private Long experience;
+    private String dateOfBirth;
+    private String experience;
 
     public String getFirstName() {
         return firstName;
@@ -25,19 +27,19 @@ public class EmployeeDTO {
         this.lastName = lastName;
     }
 
-    public Date getDateOfBirth() {
+    public String getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public Long getExperience() {
+    public String getExperience() {
         return experience;
     }
 
-    public void setExperience(Long experience) {
+    public void setExperience(String experience) {
         this.experience = experience;
     }
 }

@@ -3,8 +3,6 @@ package com.training.majorkafkaproject.util.handlers;
 import com.training.majorkafkaproject.entity.Employee;
 import com.training.majorkafkaproject.repository.MyCollection;
 import com.training.majorkafkaproject.service.Producer;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.text.SimpleDateFormat;
@@ -12,8 +10,7 @@ import java.util.Date;
 
 public class CSVHandler implements MyFileHandler {
     private final Producer producer;
-//
-//    @Autowired
+
     public CSVHandler(Producer producer) {
         this.producer = producer;
     }
@@ -73,4 +70,5 @@ public class CSVHandler implements MyFileHandler {
 //            e.printStackTrace();
 //        }
 //    }
+
 }

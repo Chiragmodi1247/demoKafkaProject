@@ -35,7 +35,6 @@ public class KafkaController {
         csvReadThread.join();
         xmlReadThread.join();
 
-//        this.producer.sendMessage();
         return HttpStatus.CREATED;
 
     }

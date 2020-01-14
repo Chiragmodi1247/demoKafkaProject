@@ -3,6 +3,8 @@ package com.training.majorkafkaproject.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.training.majorkafkaproject.entity.Employee;
+import com.training.majorkafkaproject.repository.EmployeeRepositoryMongo;
+import com.training.majorkafkaproject.repository.EmployeeRepositoryPostgres;
 import com.training.majorkafkaproject.repository.MyCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +15,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class Producer {
     private static final Logger logger = LoggerFactory.getLogger(Producer.class);
-    private static final String TOPIC = "employees";
+    private static final String TOPIC = "employeekafka";
+
+    private int count=0;
 
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
@@ -25,7 +29,6 @@ public class Producer {
             String json = ow.writeValueAsString(employee);
             System.out.println("Send object: "+json);
             this.kafkaTemplate.send(TOPIC,json);
-
 //        }
     }
 }
